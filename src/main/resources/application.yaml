@@ -1,3 +1,17 @@
+server:
+  port: 8081
+
 spring:
-  application:
-    name: AffiliatLink
+  datasource:
+    url: jdbc:postgresql://localhost:5432/affiliatlink
+    username: affiliatlink_user
+    password: dev_password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+  flyway:
+    enabled: true
