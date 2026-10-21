@@ -1,5 +1,5 @@
 
-package ma.youcode.affiliatlink.profile.repository;
+package ma.youcode.affiliatlink.profile;
 
 import ma.youcode.affiliatlink.profile.entity.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
