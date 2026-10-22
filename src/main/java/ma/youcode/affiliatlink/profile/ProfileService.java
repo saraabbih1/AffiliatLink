@@ -1,11 +1,11 @@
 
 package ma.youcode.affiliatlink.profile;
 
+import ma.youcode.affiliatlink.common.DuplicateEmailException;
 import ma.youcode.affiliatlink.profile.entity.Publisher;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
-import ma.youcode.affiliatlink.profile.PublisherCreateRequest;
-import ma.youcode.affiliatlink.profile.PublisherResponse;
 import java.util.Optional;
 
 @Service
@@ -25,6 +25,11 @@ public class ProfileService {
     }
 
     public PublisherResponse createPublisher(PublisherCreateRequest request) {
+
+        if (profileRepository.findByEmail(request.email()).isPresent()) {
+            throw new DuplicateEmailException(request.email());
+        }
+
         Publisher publisher = new Publisher();
         publisher.setEmail(request.email());
         publisher.setFirstName(request.firstName());
@@ -50,6 +55,7 @@ public class ProfileService {
                 publisher.getCountry()
         );
     }
+
     public List<PublisherResponse> findAllPublishers() {
         return profileRepository.findAll().stream()
                 .filter(Publisher.class::isInstance)
@@ -57,5 +63,4 @@ public class ProfileService {
                 .map(this::toResponse)
                 .toList();
     }
-
 }
