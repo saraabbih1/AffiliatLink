@@ -3,11 +3,11 @@ package ma.youcode.affiliatlink.profile.entity;
 
 import jakarta.persistence.*;
 import ma.youcode.affiliatlink.profile.entity.enums.ProfileStatus;
-
+import ma.youcode.affiliatlink.common.InvalidStatusTransitionException;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "profiles")
+@Table(name = "profile_profiles")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Profile {
 
@@ -44,10 +44,20 @@ public abstract class Profile {
         return status;
     }
 
-    public void setStatus(ProfileStatus status) {
-        this.status = status;
-    }
+    public void changeStatus(ProfileStatus newStatus) {
+        boolean allowed =
+                (status == ProfileStatus.PENDING && newStatus == ProfileStatus.ACTIVE)
+                        || (status == ProfileStatus.ACTIVE && newStatus == ProfileStatus.SUSPENDED)
+                        || (status == ProfileStatus.SUSPENDED && newStatus == ProfileStatus.ACTIVE);
 
+        if (!allowed) {
+            throw new InvalidStatusTransitionException(
+                    "Cannot change status from " + status + " to " + newStatus
+            );
+        }
+
+        this.status = newStatus;
+    }
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }

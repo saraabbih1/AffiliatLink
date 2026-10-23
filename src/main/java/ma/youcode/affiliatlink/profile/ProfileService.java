@@ -130,7 +130,7 @@ public class ProfileService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Profile not found"));
 
-        profile.setStatus(status);
+        profile.changeStatus(status);
         profileRepository.save(profile);
     }
 

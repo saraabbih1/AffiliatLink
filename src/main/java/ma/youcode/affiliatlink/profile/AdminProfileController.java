@@ -17,14 +17,12 @@ public class AdminProfileController {
     }
 
     @PatchMapping("/{id}/status")
-    public ResponseEntity<Map<String, String>> updateStatus(
+    public ResponseEntity<Void> updateStatus(
             @PathVariable Long id,
             @Valid @RequestBody UpdateProfileStatusRequest request) {
 
         profileService.updateProfileStatus(id, request.status());
 
-        return ResponseEntity.ok(
-                Map.of("message", "Profile status updated successfully")
-        );
+        return ResponseEntity.noContent().build();
     }
 }
