@@ -7,7 +7,7 @@ import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "advertisers")
+@Table(name = "profile_advertisers")
 @PrimaryKeyJoinColumn(name = "profile_id")
 public class Advertiser extends Profile {
 

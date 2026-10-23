@@ -1,0 +1,383 @@
+{
+  "info": {
+    "_postman_id": "6837b8c0-79f4-4367-add8-3784f6079fdb",
+    "name": "affiliatlink",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53108803",
+    "_collection_link": "https://go.postman.co/collection/53108803-6837b8c0-79f4-4367-add8-3784f6079fdb?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "409 publishers",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"sara.test@example.com\",\r\n  \"firstName\": \"Sara\",\r\n  \"lastName\": \"Abbih\",\r\n  \"niche\": \"TECH\",\r\n  \"bio\": \"Developpeuse web\",\r\n  \"country\": \"Morocco\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8081/api/publishers",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "publishers"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "post publishers",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"sara2.test@example.com\",\r\n  \"firstName\": \"Sara\",\r\n  \"lastName\": \"Abbih\",\r\n  \"niche\": \"TECH\",\r\n  \"bio\": \"Developpeuse web\",\r\n  \"country\": \"Morocco\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8081/api/publishers",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "publishers"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET publishers",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"sara.test@example.com\",\r\n  \"firstName\": \"Sara\",\r\n  \"lastName\": \"Abbih\",\r\n  \"niche\": \"TECH\",\r\n  \"bio\": \"Developpeuse web\",\r\n  \"country\": \"Morocco\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8081/api/publishers",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "publishers"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get publishers by id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8081/api/publishers/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "publishers",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "400 publishers",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"\",\r\n  \"firstName\": \"\",\r\n  \"lastName\": \"Abbih\",\r\n  \"niche\": null,\r\n  \"bio\": \"Developer\",\r\n  \"country\": \"Morocco\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8081/api/publishers",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "publishers"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST advertisers",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"company@example.com\",\r\n  \"companyName\": \"Tech Maroc\",\r\n  \"sector\": \"Technology\",\r\n  \"website\": \"https://example.com\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8081/api/advertisers",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "advertisers"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "409 advertisers",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"company@example.com\",\r\n  \"companyName\": \"Tech Maroc\",\r\n  \"sector\": \"Technology\",\r\n  \"website\": \"https://example.com\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8081/api/advertisers",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "advertisers"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "200 GET advertisers by id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8081/api/advertisers/4",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "advertisers",
+            "4"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "404 advertisers",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8081/api/advertisers/99",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "advertisers",
+            "99"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET advertisers 200",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8081/api/advertisers",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "advertisers"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Profile status 200",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "404 profile status",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"status\": \"ACTIVE\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8081/api/admin/profiles/999/status",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "admin",
+            "profiles",
+            "999",
+            "status"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "204 No Content",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"status\": \"SUSPENDED\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8081/api/admin/profiles/4/status",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "admin",
+            "profiles",
+            "4",
+            "status"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "409 Conflit status",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"status\": \"PENDING\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8081/api/admin/profiles/4/status",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "api",
+            "admin",
+            "profiles",
+            "4",
+            "status"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    }
+  ]
+}

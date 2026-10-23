@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import ma.youcode.affiliatlink.profile.entity.enums.Niche;
 
 @Entity
-@Table(name = "publishers")
+@Table(name = "profile_publishers")
 @PrimaryKeyJoinColumn(name = "profile_id")
 public class Publisher extends Profile {
 
