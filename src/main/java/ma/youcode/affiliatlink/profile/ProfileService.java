@@ -6,7 +6,8 @@ import ma.youcode.affiliatlink.profile.entity.Publisher;
 import org.springframework.stereotype.Service;
 import ma.youcode.affiliatlink.profile.entity.Advertiser;
 import ma.youcode.affiliatlink.common.ResourceNotFoundException;
-
+import ma.youcode.affiliatlink.profile.entity.Profile;
+import ma.youcode.affiliatlink.profile.entity.enums.ProfileStatus;
 import java.util.List;
 import java.util.Optional;
 
@@ -122,6 +123,15 @@ public class ProfileService {
                         advertiser.getWebsite()
                 ))
                 .toList();
+    }
+
+    public void updateProfileStatus(Long id, ProfileStatus status) {
+        Profile profile = profileRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Profile not found"));
+
+        profile.setStatus(status);
+        profileRepository.save(profile);
     }
 
 }
