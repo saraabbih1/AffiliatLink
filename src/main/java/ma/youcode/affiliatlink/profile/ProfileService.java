@@ -4,6 +4,8 @@ package ma.youcode.affiliatlink.profile;
 import ma.youcode.affiliatlink.common.DuplicateEmailException;
 import ma.youcode.affiliatlink.profile.entity.Publisher;
 import org.springframework.stereotype.Service;
+import ma.youcode.affiliatlink.profile.entity.Advertiser;
+import ma.youcode.affiliatlink.common.ResourceNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -63,4 +65,63 @@ public class ProfileService {
                 .map(this::toResponse)
                 .toList();
     }
+
+
+    public AdvertiserResponse createAdvertiser(AdvertiserCreateRequest request) {
+
+        if (profileRepository.findByEmail(request.email()).isPresent()) {
+            throw new DuplicateEmailException(request.email());
+        }
+
+        Advertiser advertiser = new Advertiser();
+        advertiser.setEmail(request.email());
+        advertiser.setCompanyName(request.companyName());
+        advertiser.setSector(request.sector());
+        advertiser.setWebsite(request.website());
+
+        Advertiser saved = profileRepository.save(advertiser);
+
+        return new AdvertiserResponse(
+                saved.getId(),
+                saved.getEmail(),
+                saved.getStatus(),
+                saved.getCreatedAt(),
+                saved.getCompanyName(),
+                saved.getSector(),
+                saved.getWebsite()
+        );
+    }
+    public AdvertiserResponse findAdvertiserById(Long id) {
+        Advertiser advertiser = profileRepository.findById(id)
+                .filter(Advertiser.class::isInstance)
+                .map(Advertiser.class::cast)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Advertiser not found"));
+
+        return new AdvertiserResponse(
+                advertiser.getId(),
+                advertiser.getEmail(),
+                advertiser.getStatus(),
+                advertiser.getCreatedAt(),
+                advertiser.getCompanyName(),
+                advertiser.getSector(),
+                advertiser.getWebsite()
+        );
+    }
+    public List<AdvertiserResponse> findAllAdvertisers() {
+        return profileRepository.findAll().stream()
+                .filter(Advertiser.class::isInstance)
+                .map(Advertiser.class::cast)
+                .map(advertiser -> new AdvertiserResponse(
+                        advertiser.getId(),
+                        advertiser.getEmail(),
+                        advertiser.getStatus(),
+                        advertiser.getCreatedAt(),
+                        advertiser.getCompanyName(),
+                        advertiser.getSector(),
+                        advertiser.getWebsite()
+                ))
+                .toList();
+    }
+
 }
