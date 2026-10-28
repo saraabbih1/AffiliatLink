@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProfileService {
+public class ProfileService implements ProfileApi {
 
 
     private final ProfileRepository profileRepository;
@@ -147,6 +147,16 @@ public class ProfileService {
                     new ProfileSuspended(profile.getId())
             );
         }
+    }
+
+    @Override
+    public boolean isAdvertiserActive(Long advertiserId) {
+        return profileRepository.findById(advertiserId)
+                .filter(Advertiser.class::isInstance)
+                .map(Advertiser.class::cast)
+                .map(advertiser ->
+                        advertiser.getStatus() == ProfileStatus.ACTIVE)
+                .orElse(false);
     }
 
 
