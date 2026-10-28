@@ -63,6 +63,43 @@ public class Campaign {
         this.payoutValue = Objects.requireNonNull(payoutValue);
         this.offer = Objects.requireNonNull(offer);
         this.status = CampaignStatus.DRAFT;
+        validateDates();
+        validateBudget();
+        validatePayout();
+    }
+
+    private void validateDates() {
+        if (!endDate.isAfter(startDate)) {
+            throw new IllegalArgumentException(
+                    "Campaign end date must be after start date"
+            );
+        }
+    }
+    private void validateBudget() {
+        if (budget.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException(
+                    "Campaign budget must be greater than zero"
+            );
+        }
+    }
+    private void validatePayout() {
+        switch (payoutModel) {
+            case CPC, CPL, CPA_FIXED -> {
+                if (payoutValue.compareTo(BigDecimal.ZERO) <= 0) {
+                    throw new IllegalArgumentException(
+                            "Payout value must be greater than zero"
+                    );
+                }
+            }
+            case CPA_PERCENT -> {
+                if (payoutValue.compareTo(BigDecimal.ZERO) < 0
+                        || payoutValue.compareTo(BigDecimal.valueOf(100)) > 0) {
+                    throw new IllegalArgumentException(
+                            "CPA_PERCENT payout value must be between 0 and 100"
+                    );
+                }
+            }
+        }
     }
 
     public Long getId() {
