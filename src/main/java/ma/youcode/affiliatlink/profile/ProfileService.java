@@ -8,17 +8,25 @@ import ma.youcode.affiliatlink.profile.entity.Advertiser;
 import ma.youcode.affiliatlink.common.ResourceNotFoundException;
 import ma.youcode.affiliatlink.profile.entity.Profile;
 import ma.youcode.affiliatlink.profile.entity.enums.ProfileStatus;
+import org.springframework.context.ApplicationEventPublisher;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ProfileService {
 
-    private final ProfileRepository profileRepository;
 
-    public ProfileService(ProfileRepository profileRepository) {
+    private final ProfileRepository profileRepository;
+    private final ApplicationEventPublisher eventPublisher;
+
+    public ProfileService(
+            ProfileRepository profileRepository,
+            ApplicationEventPublisher eventPublisher
+    ) {
         this.profileRepository = profileRepository;
+        this.eventPublisher = eventPublisher;
     }
+
 
     public Optional<PublisherResponse> findPublisherById(Long id) {
         return profileRepository.findById(id)
@@ -125,6 +133,7 @@ public class ProfileService {
                 .toList();
     }
 
+
     public void updateProfileStatus(Long id, ProfileStatus status) {
         Profile profile = profileRepository.findById(id)
                 .orElseThrow(() ->
@@ -132,6 +141,14 @@ public class ProfileService {
 
         profile.changeStatus(status);
         profileRepository.save(profile);
+
+        if (status == ProfileStatus.SUSPENDED) {
+            eventPublisher.publishEvent(
+                    new ProfileSuspended(profile.getId())
+            );
+        }
     }
+
+
 
 }
