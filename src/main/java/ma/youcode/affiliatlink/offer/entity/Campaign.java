@@ -4,9 +4,8 @@ package ma.youcode.affiliatlink.offer.entity;
 import jakarta.persistence.*;
 import ma.youcode.affiliatlink.offer.entity.enums.CampaignStatus;
 import ma.youcode.affiliatlink.offer.entity.enums.PayoutModel;
-
-import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
@@ -100,6 +99,43 @@ public class Campaign {
                 }
             }
         }
+    }
+
+    public void pause() {
+        if (status != CampaignStatus.ACTIVE) {
+            throw new IllegalStateException(
+                    "Only active campaigns can be paused"
+            );
+        }
+
+        this.status = CampaignStatus.PAUSED;
+    }
+    public void activate() {
+        if (status != CampaignStatus.DRAFT
+                && status != CampaignStatus.PAUSED) {
+            throw new IllegalStateException(
+                    "Only draft or paused campaigns can be activated"
+            );
+        }
+
+        if (endDate.isBefore(LocalDate.now())) {
+            throw new IllegalStateException(
+                    "Expired campaigns cannot be activated"
+            );
+        }
+
+        this.status = CampaignStatus.ACTIVE;
+    }
+
+    public void end() {
+        if (status != CampaignStatus.ACTIVE
+                && status != CampaignStatus.PAUSED) {
+            throw new IllegalStateException(
+                    "Only active or paused campaigns can be ended"
+            );
+        }
+
+        this.status = CampaignStatus.ENDED;
     }
 
     public Long getId() {
