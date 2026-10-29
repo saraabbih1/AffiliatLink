@@ -87,4 +87,26 @@ public class Offer {
     public Set<Tag> getTags() {
         return tags;
     }
+
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setLandingUrl(String landingUrl) {
+        this.landingUrl = landingUrl;
+    }
+
+    public void setNiche(String niche) {
+        this.niche = niche;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = new HashSet<>(tags);
+    }
+
 }
