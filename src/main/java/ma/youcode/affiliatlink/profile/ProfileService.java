@@ -134,20 +134,25 @@ public class ProfileService implements ProfileApi {
     }
 
 
+
     public void updateProfileStatus(Long id, ProfileStatus status) {
         Profile profile = profileRepository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Profile not found"));
 
+        ProfileStatus previousStatus = profile.getStatus();
+
         profile.changeStatus(status);
         profileRepository.save(profile);
 
-        if (status == ProfileStatus.SUSPENDED) {
+        if (previousStatus == ProfileStatus.ACTIVE
+                && status == ProfileStatus.SUSPENDED) {
             eventPublisher.publishEvent(
                     new ProfileSuspended(profile.getId())
             );
         }
     }
+
 
     @Override
     public boolean isAdvertiserActive(Long advertiserId) {
