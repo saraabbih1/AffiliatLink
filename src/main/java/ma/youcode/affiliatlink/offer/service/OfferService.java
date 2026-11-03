@@ -16,6 +16,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import ma.youcode.affiliatlink.offer.dto.OfferSearchCriteria;
+import ma.youcode.affiliatlink.offer.specification.OfferSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.LinkedHashSet;
 import java.util.Locale;
@@ -108,4 +113,21 @@ public class OfferService implements OfferApi {
     public boolean existsById(Long offerId) {
         return offerRepository.existsById(offerId);
     }
+
+    @Transactional(readOnly = true)
+    public Page<OfferResponse> search(
+            OfferSearchCriteria criteria,
+            Pageable pageable
+    ) {
+
+        Specification<Offer> specification = Specification
+                .where(OfferSpecification.hasNiche(criteria.niche()))
+                .and(OfferSpecification.hasAdvertiserId(criteria.advertiserId()))
+                .and(OfferSpecification.hasTag(criteria.tag()))
+                .and(OfferSpecification.hasKeyword(criteria.keyword()));
+
+        return offerRepository.findAll(specification, pageable)
+                .map(offerMapper::toResponse);
+    }
+
 }

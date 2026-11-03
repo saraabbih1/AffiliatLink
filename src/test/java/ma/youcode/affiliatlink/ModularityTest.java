@@ -4,7 +4,7 @@ package ma.youcode.affiliatlink;
 import org.junit.jupiter.api.Test;
 import org.springframework.modulith.core.ApplicationModules;
 
-class ModularityTest {
+class   ModularityTest {
 
     @Test
     void verifiesModuleStructure() {
