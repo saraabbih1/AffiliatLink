@@ -1,4 +1,4 @@
-package ma.youcode.affiliatlink.offer.entity.enums;
+package ma.youcode.affiliatlink.campaign.enums;
 
 public enum PayoutModel {
     CPC,

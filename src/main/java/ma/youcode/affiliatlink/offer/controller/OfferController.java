@@ -4,21 +4,15 @@ package ma.youcode.affiliatlink.offer.controller;
 import jakarta.validation.Valid;
 import ma.youcode.affiliatlink.offer.dto.CreateOfferRequest;
 import ma.youcode.affiliatlink.offer.dto.OfferResponse;
-import ma.youcode.affiliatlink.offer.dto.OfferSearchCriteria;
 import ma.youcode.affiliatlink.offer.dto.UpdateOfferRequest;
 import ma.youcode.affiliatlink.offer.service.OfferService;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.Set;
-
 @RestController
 @RequestMapping("/api/offres")
 public class OfferController {
@@ -51,74 +45,24 @@ public class OfferController {
     }
 
     @GetMapping
-    public Page<OfferResponse> search(
-            @RequestParam(required = false) String niche,
+    public Page<OfferResponse> getAllOffers(
             @RequestParam(required = false) Long advertiserId,
+            @RequestParam(required = false) String niche,
             @RequestParam(required = false) String tag,
             @RequestParam(required = false) String keyword,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "createdAt,desc") String sort
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "desc") String direction
     ) {
+        Sort sort = direction.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
 
-        if (page < 0 || size < 1 || size > 100) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Invalid pagination parameters"
-            );
-        }
+        Pageable pageable = PageRequest.of(page, size, sort);
 
-        Set<String> allowedFields = Set.of(
-                "id",
-                "title",
-                "createdAt",
-                "niche"
+        return offerService.getAllOffers(
+                advertiserId, niche, tag, keyword, pageable
         );
-
-        String[] sortParams = sort.split(",", -1);
-
-        if (sortParams.length > 2) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Invalid sort format"
-            );
-        }
-
-        String field = sortParams[0].trim();
-
-        if (!allowedFields.contains(field)) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Invalid sort field: " + field
-            );
-        }
-
-        Sort.Direction direction;
-
-        try {
-            direction = sortParams.length > 1
-                    ? Sort.Direction.fromString(sortParams[1].trim())
-                    : Sort.Direction.ASC;
-        } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Invalid sort direction"
-            );
-        }
-
-        Pageable pageable = PageRequest.of(
-                page,
-                size,
-                Sort.by(direction, field)
-        );
-
-        OfferSearchCriteria criteria = new OfferSearchCriteria(
-                niche,
-                advertiserId,
-                tag,
-                keyword
-        );
-
-        return offerService.search(criteria, pageable);
     }
 }

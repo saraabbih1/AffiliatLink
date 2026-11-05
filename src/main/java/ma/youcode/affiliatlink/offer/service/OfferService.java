@@ -1,6 +1,7 @@
 
 package ma.youcode.affiliatlink.offer.service;
 
+
 import ma.youcode.affiliatlink.common.ResourceNotFoundException;
 import ma.youcode.affiliatlink.offer.OfferApi;
 import ma.youcode.affiliatlink.offer.dto.CreateOfferRequest;
@@ -16,15 +17,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import ma.youcode.affiliatlink.offer.dto.OfferSearchCriteria;
 import ma.youcode.affiliatlink.offer.specification.OfferSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-
-import java.util.LinkedHashSet;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,8 +36,7 @@ public class OfferService implements OfferApi {
             OfferRepository offerRepository,
             TagRepository tagRepository,
             OfferMapper offerMapper,
-            ProfileApi profileApi
-    ) {
+            ProfileApi profileApi) {
         this.offerRepository = offerRepository;
         this.tagRepository = tagRepository;
         this.offerMapper = offerMapper;
@@ -86,6 +82,26 @@ public class OfferService implements OfferApi {
 
         return offerMapper.toResponse(offer);
     }
+    @Transactional(readOnly = true)
+    public Page<OfferResponse> getAllOffers(
+            Long advertiserId,
+            String niche,
+            String tag,
+            String keyword,
+            Pageable pageable
+    ) {
+        Specification<Offer> spec =
+                (root, query, cb) -> cb.conjunction();
+
+        spec = spec
+                .and(OfferSpecification.hasAdvertiserId(advertiserId))
+                .and(OfferSpecification.hasNiche(niche))
+                .and(OfferSpecification.hasTag(tag))
+                .and(OfferSpecification.hasKeyword(keyword));
+
+        return offerRepository.findAll(spec, pageable)
+                .map(offerMapper::toResponse);
+    }
 
 
 
@@ -113,21 +129,15 @@ public class OfferService implements OfferApi {
     public boolean existsById(Long offerId) {
         return offerRepository.existsById(offerId);
     }
-
+    @Override
     @Transactional(readOnly = true)
-    public Page<OfferResponse> search(
-            OfferSearchCriteria criteria,
-            Pageable pageable
-    ) {
-
-        Specification<Offer> specification = Specification
-                .where(OfferSpecification.hasNiche(criteria.niche()))
-                .and(OfferSpecification.hasAdvertiserId(criteria.advertiserId()))
-                .and(OfferSpecification.hasTag(criteria.tag()))
-                .and(OfferSpecification.hasKeyword(criteria.keyword()));
-
-        return offerRepository.findAll(specification, pageable)
-                .map(offerMapper::toResponse);
+    public Optional<Long> findAdvertiserIdByOfferId(Long offerId) {
+        return offerRepository.findAdvertiserIdById(offerId);
+    }
+    @Override
+    @Transactional(readOnly = true)
+    public List<Long> findOfferIdsByAdvertiserId(Long advertiserId) {
+        return offerRepository.findOfferIdsByAdvertiserId(advertiserId);
     }
 
 }

@@ -1,6 +1,5 @@
 
 package ma.youcode.affiliatlink.offer.entity;
-
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
