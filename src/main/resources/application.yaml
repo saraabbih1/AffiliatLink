@@ -9,9 +9,19 @@ spring:
     driver-class-name: org.postgresql.Driver
 
   jpa:
+    open-in-view: false
     hibernate:
       ddl-auto: validate
     show-sql: true
 
   flyway:
     enabled: true
+
+logging:
+  level:
+    root: INFO
+    ma.youcode.affiliatlink: DEBUG
+    org.springframework: WARN
+
+  file:
+    name: logs/affiliatlink.log
