@@ -1,15 +1,15 @@
 
-package ma.youcode.affiliatlink.campaign.service;
+package ma.youcode.affiliatlink.offer.service;
 
-import ma.youcode.affiliatlink.campaign.dto.CampaignResponse;
-import ma.youcode.affiliatlink.campaign.dto.CreateCampaignRequest;
-import ma.youcode.affiliatlink.campaign.entity.Campaign;
-import ma.youcode.affiliatlink.campaign.enums.CampaignStatus;
-import ma.youcode.affiliatlink.campaign.enums.PayoutModel;
-import ma.youcode.affiliatlink.campaign.mapper.CampaignMapper;
-import ma.youcode.affiliatlink.campaign.repository.CampaignRepository;
 import ma.youcode.affiliatlink.common.ResourceNotFoundException;
 import ma.youcode.affiliatlink.offer.OfferApi;
+import ma.youcode.affiliatlink.offer.dto.CampaignResponse;
+import ma.youcode.affiliatlink.offer.dto.CreateCampaignRequest;
+import ma.youcode.affiliatlink.offer.entity.Campaign;
+import ma.youcode.affiliatlink.offer.entity.enums.CampaignStatus;
+import ma.youcode.affiliatlink.offer.entity.enums.PayoutModel;
+import ma.youcode.affiliatlink.offer.mapper.CampaignMapper;
+import ma.youcode.affiliatlink.offer.repository.CampaignRepository;
 import ma.youcode.affiliatlink.profile.ProfileApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
