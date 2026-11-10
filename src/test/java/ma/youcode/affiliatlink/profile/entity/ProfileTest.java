@@ -3,6 +3,10 @@ package ma.youcode.affiliatlink.profile.entity;
 import ma.youcode.affiliatlink.profile.entity.enums.Niche;
 import ma.youcode.affiliatlink.profile.entity.enums.ProfileStatus;
 import org.junit.jupiter.api.Test;
+import ma.youcode.affiliatlink.common.InvalidStatusTransitionException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -46,6 +50,92 @@ public class ProfileTest{
         assertThat(advertiser.getStatus()).isEqualTo(ProfileStatus.PENDING);
         assertThat(advertiser.getCreatedAt()).isNotNull();
     }
+    @Test
+    void shouldActivatePendingProfile() {
+        Advertiser advertiser = new Advertiser();
 
+        advertiser.changeStatus(ProfileStatus.ACTIVE);
 
+        assertThat(advertiser.getStatus())
+                .isEqualTo(ProfileStatus.ACTIVE);
+    }
+    @Test
+    void shouldSuspendActiveProfile() {
+        Advertiser advertiser = new Advertiser();
+
+        advertiser.changeStatus(ProfileStatus.ACTIVE);
+        advertiser.changeStatus(ProfileStatus.SUSPENDED);
+
+        assertThat(advertiser.getStatus())
+                .isEqualTo(ProfileStatus.SUSPENDED);
+    }
+    @Test
+    void shouldReactivateSuspendedProfile() {
+        Advertiser advertiser = new Advertiser();
+
+        advertiser.changeStatus(ProfileStatus.ACTIVE);
+        advertiser.changeStatus(ProfileStatus.SUSPENDED);
+        advertiser.changeStatus(ProfileStatus.ACTIVE);
+
+        assertThat(advertiser.getStatus())
+                .isEqualTo(ProfileStatus.ACTIVE);
+    }
+    @Test
+    void shouldRejectSuspendingPendingProfile() {
+        Advertiser advertiser = new Advertiser();
+
+        assertThatThrownBy(() ->
+                advertiser.changeStatus(ProfileStatus.SUSPENDED)
+        ).isInstanceOf(InvalidStatusTransitionException.class);
+
+        assertThat(advertiser.getStatus())
+                .isEqualTo(ProfileStatus.PENDING);
+    }
+    @Test
+    void shouldRejectMovingActiveProfileToPending() {
+        Advertiser advertiser = new Advertiser();
+
+        advertiser.changeStatus(ProfileStatus.ACTIVE);
+
+        assertThatThrownBy(() ->
+                advertiser.changeStatus(ProfileStatus.PENDING)
+        ).isInstanceOf(InvalidStatusTransitionException.class);
+
+        assertThat(advertiser.getStatus())
+                .isEqualTo(ProfileStatus.ACTIVE);
+    }
+    @Test
+    void shouldRejectMovingSuspendedProfileToPending() {
+        Advertiser advertiser = new Advertiser();
+
+        advertiser.changeStatus(ProfileStatus.ACTIVE);
+        advertiser.changeStatus(ProfileStatus.SUSPENDED);
+
+        assertThatThrownBy(() ->
+                advertiser.changeStatus(ProfileStatus.PENDING)
+        ).isInstanceOf(InvalidStatusTransitionException.class);
+
+        assertThat(advertiser.getStatus())
+                .isEqualTo(ProfileStatus.SUSPENDED);
+    }
+    @ParameterizedTest
+    @EnumSource(ProfileStatus.class)
+    void shouldRejectTransitionToSameStatus(ProfileStatus status) {
+        Advertiser advertiser = new Advertiser();
+
+        if (status == ProfileStatus.ACTIVE) {
+            advertiser.changeStatus(ProfileStatus.ACTIVE);
+        }
+
+        if (status == ProfileStatus.SUSPENDED) {
+            advertiser.changeStatus(ProfileStatus.ACTIVE);
+            advertiser.changeStatus(ProfileStatus.SUSPENDED);
+        }
+
+        assertThatThrownBy(() -> advertiser.changeStatus(status))
+                .isInstanceOf(InvalidStatusTransitionException.class);
+
+        assertThat(advertiser.getStatus())
+                .isEqualTo(status);
+    }
 }
