@@ -1,9 +1,8 @@
 
-package ma.youcode.affiliatlink.campaign.mapper;
-
-import ma.youcode.affiliatlink.campaign.dto.CampaignResponse;
-import ma.youcode.affiliatlink.campaign.dto.CreateCampaignRequest;
-import ma.youcode.affiliatlink.campaign.entity.Campaign;
+package ma.youcode.affiliatlink.offer.mapper;
+import ma.youcode.affiliatlink.offer.dto.CampaignResponse;
+import ma.youcode.affiliatlink.offer.dto.CreateCampaignRequest;
+import ma.youcode.affiliatlink.offer.entity.Campaign;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

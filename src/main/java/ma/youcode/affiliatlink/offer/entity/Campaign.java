@@ -1,9 +1,9 @@
 
-package ma.youcode.affiliatlink.campaign.entity;
+package ma.youcode.affiliatlink.offer.entity;
 
 import jakarta.persistence.*;
-import ma.youcode.affiliatlink.campaign.enums.CampaignStatus;
-import ma.youcode.affiliatlink.campaign.enums.PayoutModel;
+import ma.youcode.affiliatlink.offer.entity.enums.CampaignStatus;
+import ma.youcode.affiliatlink.offer.entity.enums.PayoutModel;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

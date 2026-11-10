@@ -1,7 +1,7 @@
 
-package ma.youcode.affiliatlink.campaign.listener;
+package ma.youcode.affiliatlink.offer.listener;
 
-import ma.youcode.affiliatlink.campaign.service.CampaignService;
+import ma.youcode.affiliatlink.offer.service.CampaignService;
 import ma.youcode.affiliatlink.profile.ProfileSuspended;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

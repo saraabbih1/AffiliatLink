@@ -1,4 +1,4 @@
-package ma.youcode.affiliatlink.campaign.dto;
+package ma.youcode.affiliatlink.offer.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

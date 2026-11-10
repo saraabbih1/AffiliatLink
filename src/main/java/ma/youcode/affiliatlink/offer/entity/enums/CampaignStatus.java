@@ -1,5 +1,5 @@
 
-package ma.youcode.affiliatlink.campaign.enums;
+package ma.youcode.affiliatlink.offer.entity.enums;
 public enum CampaignStatus {
     DRAFT,
     ACTIVE,

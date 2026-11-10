@@ -1,10 +1,10 @@
 
-package ma.youcode.affiliatlink.campaign.controller;
+package ma.youcode.affiliatlink.offer.controller;
 
-import ma.youcode.affiliatlink.campaign.dto.CampaignResponse;
-import ma.youcode.affiliatlink.campaign.dto.CreateCampaignRequest;
-import ma.youcode.affiliatlink.campaign.enums.CampaignStatus;
-import ma.youcode.affiliatlink.campaign.service.CampaignService;
+import ma.youcode.affiliatlink.offer.dto.CampaignResponse;
+import ma.youcode.affiliatlink.offer.dto.CreateCampaignRequest;
+import ma.youcode.affiliatlink.offer.entity.enums.CampaignStatus;
+import ma.youcode.affiliatlink.offer.service.CampaignService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

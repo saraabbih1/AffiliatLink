@@ -1,7 +1,7 @@
-package ma.youcode.affiliatlink.campaign.repository;
+package ma.youcode.affiliatlink.offer.repository;
 
-import ma.youcode.affiliatlink.campaign.entity.Campaign;
-import ma.youcode.affiliatlink.campaign.enums.CampaignStatus;
+import ma.youcode.affiliatlink.offer.entity.enums.CampaignStatus;
+import ma.youcode.affiliatlink.offer.entity.Campaign;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
