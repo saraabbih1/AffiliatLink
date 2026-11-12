@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import java.util.Optional;
 import java.util.List;
+import ma.youcode.affiliatlink.common.ResourceNotFoundException;
 import ma.youcode.affiliatlink.profile.entity.Advertiser;
 import ma.youcode.affiliatlink.common.DuplicateEmailException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -211,5 +212,71 @@ class ProfileServiceTest {
 
         verify(profileRepository).findById(advertiserId);
     }
+
+
+    @Test
+    void shouldThrowExceptionWhenAdvertiserNotFound() {
+
+        Long advertiserId = 999L;
+
+        when(profileRepository.findById(advertiserId))
+                .thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> profileService.findAdvertiserById(advertiserId))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessage("Advertiser not found");
+
+        verify(profileRepository).findById(advertiserId);
+    }
+
+    @Test
+    void shouldPublishEventWhenProfileSuspended() {
+
+
+        Long profileId = 1L;
+
+        Publisher publisher = new Publisher();
+        publisher.changeStatus(ProfileStatus.ACTIVE);
+
+        when(profileRepository.findById(profileId))
+                .thenReturn(Optional.of(publisher));
+
+
+        profileService.updateProfileStatus(
+                profileId, ProfileStatus.SUSPENDED
+        );
+
+
+        assertThat(publisher.getStatus())
+                .isEqualTo(ProfileStatus.SUSPENDED);
+
+        verify(profileRepository).save(publisher);
+        verify(eventPublisher).publishEvent(
+                any(ProfileSuspended.class)
+        );
+    }
+
+    @Test
+    void shouldNotPublishEventWhenProfileActivated() {
+
+        Long profileId = 1L;
+
+        Publisher publisher = new Publisher();
+
+        when(profileRepository.findById(profileId))
+                .thenReturn(Optional.of(publisher));
+
+        profileService.updateProfileStatus(
+                profileId, ProfileStatus.ACTIVE
+        );
+
+
+        assertThat(publisher.getStatus())
+                .isEqualTo(ProfileStatus.ACTIVE);
+
+        verify(profileRepository).save(publisher);
+        verify(eventPublisher, never()).publishEvent(any());
+    }
+
 
 }
