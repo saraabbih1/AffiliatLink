@@ -7,14 +7,18 @@ import ma.youcode.affiliatlink.offer.entity.enums.CampaignStatus;
 import ma.youcode.affiliatlink.offer.mapper.CampaignMapper;
 import ma.youcode.affiliatlink.offer.repository.CampaignRepository;
 import ma.youcode.affiliatlink.profile.ProfileApi;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -58,4 +62,57 @@ class CampaignServiceTest {
 
         verify(campaignRepository).saveAll(List.of(campaign1, campaign2));
     }
+    @Test
+    void shouldRejectInvalidTransitionFromDraftToEnded() {
+
+        Long campaignId = 1L;
+        Campaign campaign = mock(Campaign.class);
+
+        when(campaignRepository.findById(campaignId))
+                .thenReturn(Optional.of(campaign));
+
+        when(campaign.getStatus())
+                .thenReturn(CampaignStatus.DRAFT);
+
+
+        assertThatThrownBy(() ->
+                campaignService.updateCampaignStatus(
+                        campaignId,
+                        CampaignStatus.ENDED
+                )
+        )
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Invalid campaign status transition");
+
+        verify(campaignRepository, never()).save(any(Campaign.class));
+    }
+    @Test
+    void shouldRejectActivationOfExpiredCampaign() {
+
+        Long campaignId = 1L;
+        Campaign campaign = mock(Campaign.class);
+
+        when(campaignRepository.findById(campaignId))
+                .thenReturn(Optional.of(campaign));
+
+        when(campaign.getStatus())
+                .thenReturn(CampaignStatus.DRAFT);
+
+        when(campaign.getEndDate())
+                .thenReturn(LocalDate.now().minusDays(1));
+
+
+        assertThatThrownBy(() ->
+                campaignService.updateCampaignStatus(
+                        campaignId,
+                        CampaignStatus.ACTIVE
+                )
+        )
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Cannot activate an expired campaign");
+
+        verify(campaignRepository, never()).save(any(Campaign.class));
+    }
+
+
 }
