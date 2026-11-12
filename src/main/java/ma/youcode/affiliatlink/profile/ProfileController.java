@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ma.youcode.affiliatlink.profile.PublisherCreateRequest;
 import ma.youcode.affiliatlink.profile.PublisherResponse;
+import ma.youcode.affiliatlink.common.ResourceNotFoundException;
 import java.util.List;
 
 @RestController
@@ -28,14 +29,18 @@ public class ProfileController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
+
     @GetMapping("/{id}")
     public ResponseEntity<PublisherResponse> findPublisherById(
             @PathVariable Long id) {
 
-        return profileService.findPublisherById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        PublisherResponse publisher = profileService.findPublisherById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Publisher not found"));
+
+        return ResponseEntity.ok(publisher);
     }
+
     @GetMapping
     public ResponseEntity<List<PublisherResponse>> findAllPublishers() {
         return ResponseEntity.ok(profileService.findAllPublishers());
